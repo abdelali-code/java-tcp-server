@@ -17,22 +17,27 @@ public class ClientHandler implements Runnable{
         try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            String msg = in.readLine();
-            System.out.println("recieved message is " + msg);
-            if ("hello".equals(msg)) {
-                out.println("Bonjour client !");
-            }else if ("time".equals(msg)) {
-                out.println("time is " + LocalDateTime.now().toString()) ;
-            } else if ("bye".equals(msg)) {
-                in.close();
-                out.close();
-                socket.close();
+
+            String msg;
+            while ((msg = in.readLine()) != null) {  // loop until client disconnects
+                System.out.println("received message: " + msg);
+
+                if ("hello".equals(msg)) {
+                    out.println("Bonjour client !");
+                } else if ("time".equals(msg)) {
+                    out.println("time is " + LocalDateTime.now());
+                } else if ("bye".equals(msg)) {
+                    out.println("Au revoir !");
+                    break;
+                } else {
+                    out.println("Message reçu : " + msg);
+                }
             }
-            else {
-                out.println("Message reçu : " + msg);
-            }
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Client disconnected: " + e.getMessage());
+        } finally {
+            try { socket.close(); } catch (IOException ignored) {}
         }
     }
 }
