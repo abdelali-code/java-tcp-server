@@ -68,3 +68,6 @@ src/
 └── org/example/client/
     └── ClientHandler.java       # Handles each client in a separate thread
 ```
+
+
+![Server Diagram](src/main/resources/images/resulta.png)
